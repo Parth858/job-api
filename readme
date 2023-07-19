@@ -1,0 +1,5 @@
+Open the job file 
+launch the virtual env : myenv\scripts\activate 
+Run : python manage.py migrate (if any migrations are neended)
+      python manage.py makemigrations
+      python manage.py runserver (follow the link provided on the page)
