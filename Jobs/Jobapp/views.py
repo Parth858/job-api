@@ -27,7 +27,17 @@ class JobViewSets(viewsets.ModelViewSet):
         the ModelViewSet, in order to contain a new field
         called 'No of applicants' to the serializer data"""
 
-        serializedJobData = self.serializer_class(self.get_queryset(), many=True, context={"request" : request})
+        # check for the query_params (in case of filter)
+        filters = request.query_params
+        filtersDict = {}
+        if filters:
+            for filterName, filterValue in filters.items():
+                if filterName in self.filterset_fields:
+                    filtersDict[filterName] = filterValue
+
+        jobsData = Job.objects.filter(**filtersDict)
+
+        serializedJobData = self.serializer_class(jobsData, many=True, context={"request" : request})
         # get number of applicants
         serializedJobData = self.getNumberOfApplicants(serializedJobData)
 
