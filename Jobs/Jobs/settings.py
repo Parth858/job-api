@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'Jobs.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'NullJob',
+        'USER': 'hi-man',
+        'PASSWORD': 'p4rk.r0n1n',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 

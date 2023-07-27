@@ -125,6 +125,7 @@ class UserViewSets(viewsets.ModelViewSet):
 
         # Update the fields
         print(request.data)
+        print(self.get_serializer())
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
