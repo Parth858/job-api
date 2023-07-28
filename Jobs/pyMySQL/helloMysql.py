@@ -63,16 +63,16 @@ class MySQL:
         """This method creates tables
         job and user, as created by parth
         """
-        self.tables["company"] = (
-            "CREATE TABLE IF NOT EXISTS company ("
+        self.tables["Jobapp_company"] = (
+            "CREATE TABLE IF NOT EXISTS Jobapp_company ("
                 "company_id VARCHAR(36) PRIMARY KEY,"
                 "name VARCHAR(50) NOT NULL,"
                 "location TEXT(255) NOT NULL,"
                 "about TEXT(500) DEFAULT 'None'"
             ")"
         )
-        self.tables['job'] = (
-            "CREATE TABLE IF NOT EXISTS job ("
+        self.tables['Jobapp_job'] = (
+            "CREATE TABLE IF NOT EXISTS Jobapp_job ("
                 "job_id VARCHAR(36) PRIMARY KEY,"
                 "job_role VARCHAR(100) NOT NULL,"
                 "company VARCHAR(100) NOT NULL,"
@@ -83,25 +83,25 @@ class MySQL:
                 "experience INTEGER NOT NULL,"
                 "created_at TIMESTAMP DEFAULT current_timestamp(),"
                 "updated_at TIMESTAMP DEFAULT current_timestamp() ON UPDATE current_timestamp(),"
-                "INDEX index_company (company),"
+                "INDEX index_Jobapp_company (company),"
                 "FOREIGN KEY (company)"
-                "REFERENCES company(company_id)"
+                "REFERENCES Jobapp_company(company_id)"
                 "ON DELETE CASCADE"
             ")"
         )
-        self.tables['user_profile'] = (
-            "CREATE TABLE IF NOT EXISTS user_profile ("
+        self.tables['Jobapp_user'] = (
+            "CREATE TABLE IF NOT EXISTS Jobapp_user ("
                 "id VARCHAR(36) NOT NULL PRIMARY KEY,"
                 "user_profile JSON,"
                 "position VARCHAR(36) DEFAULT 'None',"
                 "company VARCHAR(36) DEFAULT 'None',"
-                "INDEX index_job (position),"
+                "INDEX index_Jobapp_job (position),"
                 "FOREIGN KEY (position)"
-                "REFERENCES job(job_id)"
+                "REFERENCES Jobapp_job(job_id)"
                 "ON DELETE CASCADE,"
-                "INDEX index_company (company),"
+                "INDEX index_Jobapp_company (company),"
                 "FOREIGN KEY (company)"
-                "REFERENCES company(company_id)"
+                "REFERENCES Jobapp_company(company_id)"
                 "ON DELETE CASCADE"
             ")"
         )
@@ -121,7 +121,7 @@ class MySQL:
         VALUES(val1, val2...)
         """
         insert_query = (
-            "INSERT INTO company "
+            "INSERT INTO Jobapp_company "
             "VALUES (%s, %s, %s, %s)"
         )
 

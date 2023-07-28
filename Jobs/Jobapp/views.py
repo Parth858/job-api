@@ -8,6 +8,7 @@ from Jobapp.serializers import JobSerializer, UserSerializer, CompanySerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db import ProgrammingError
 
 # Create your views here.
 # this ModelViewSet provides basic crud methods like create, update etc.
@@ -35,6 +36,8 @@ class JobViewSets(viewsets.ModelViewSet):
                 if filterName in self.filterset_fields:
                     filtersDict[filterName] = filterValue
 
+        # Even if the filtersDict is empty, it returns
+        # overall data present in the Job
         jobsData = Job.objects.filter(**filtersDict)
 
         serializedJobData = self.serializer_class(jobsData, many=True, context={"request" : request})
@@ -157,6 +160,15 @@ class CompanyViewSets(viewsets.ModelViewSet):
     # Basic filters
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['name', 'location']
+
+    def list(self, request, *args, **kwargs):
+        ## get the data from database using mysql select statement
+        try:
+            companyData = Company.objects.raw("SELECT * FROM Jobapp_company")
+            serializedCompanyData = self.serializer_class(companyData, many=True)
+            return Response(serializedCompanyData.data, status=status.HTTP_200_OK)
+        except ProgrammingError as error:
+            raise Exception("Issue with retrieving the data")
 
     @action(detail=False, methods=['get'])
     def jobs(self, request):
