@@ -32,13 +32,12 @@ class MySQL:
             if error.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 raise Exception("Something went Wrong! Access denied")
             elif error.errno == errorcode.ER_BAD_DB_ERROR:
-                raise Exception(f"Wrong database information provided! Database={self.database}")
+                print(f"Wrong database information provided! Database={self.database}")
+            choice = input("Do you want to created a new database named {} [Y/N]".format(self.database))
+            if choice.lower() == 'y':
+                self._create_database()
             else:
-                choice = input("Do you want to created a new database named {} [Y/N]".format(self.database))
-                if choice.lower() == 'y':
-                    self._create_database()
-                else:
-                    exit(1)
+                print("No DB in use currently")
             
     def _create_database(self):
         if not self.database:
@@ -74,8 +73,8 @@ class MySQL:
         self.tables['Jobapp_job'] = (
             "CREATE TABLE IF NOT EXISTS Jobapp_job ("
                 "job_id VARCHAR(36) PRIMARY KEY,"
-                "job_role VARCHAR(100) NOT NULL,"
-                "company VARCHAR(100) NOT NULL,"
+                "job_role VARCHAR(50) NOT NULL,"
+                "company_id VARCHAR(36) NOT NULL,"
                 "description TEXT DEFAULT 'None',"
                 "location TEXT(200) DEFAULT 'None',"
                 "post_date DATE NOT NULL,"
@@ -83,24 +82,28 @@ class MySQL:
                 "experience INTEGER NOT NULL,"
                 "created_at TIMESTAMP DEFAULT current_timestamp(),"
                 "updated_at TIMESTAMP DEFAULT current_timestamp() ON UPDATE current_timestamp(),"
-                "INDEX index_Jobapp_company (company),"
-                "FOREIGN KEY (company)"
+                "INDEX index_Jobapp_company (company_id),"
+                "FOREIGN KEY (company_id)"
                 "REFERENCES Jobapp_company(company_id)"
                 "ON DELETE CASCADE"
             ")"
         )
         self.tables['Jobapp_user'] = (
             "CREATE TABLE IF NOT EXISTS Jobapp_user ("
-                "id VARCHAR(36) NOT NULL PRIMARY KEY,"
-                "user_profile JSON,"
-                "position VARCHAR(36) DEFAULT 'None',"
-                "company VARCHAR(36) DEFAULT 'None',"
-                "INDEX index_Jobapp_job (position),"
-                "FOREIGN KEY (position)"
+                "user_id VARCHAR(36) NOT NULL PRIMARY KEY,"
+                "name VARCHAR(30) DEFAULT 'None',"
+                "email VARCHAR(30) DEFAULT 'None',"
+                "address TEXT(200) DEFAULT 'None',"
+                "phone VARCHAR(15) DEFAULT 'None',"
+                "about TEXT DEFAULT 'None',"
+                "resume VARCHAR(100) DEFAULT 'None',"
+                "profile_picture VARCHAR(100) DEFAULT 'None',"
+                "job_id VARCHAR(36) NOT NULL,"
+                "company_id VARCHAR(36) NOT NULL,"
+                "FOREIGN KEY (job_id)"
                 "REFERENCES Jobapp_job(job_id)"
                 "ON DELETE CASCADE,"
-                "INDEX index_Jobapp_company (company),"
-                "FOREIGN KEY (company)"
+                "FOREIGN KEY (company_id)"
                 "REFERENCES Jobapp_company(company_id)"
                 "ON DELETE CASCADE"
             ")"
@@ -121,7 +124,7 @@ class MySQL:
         VALUES(val1, val2...)
         """
         insert_query = (
-            "INSERT INTO Jobapp_company "
+            "INSERT INTO Jobapp_company (company_id, location, about, name)"
             "VALUES (%s, %s, %s, %s)"
         )
 
