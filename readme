@@ -3,3 +3,14 @@ launch the virtual env : myenv\scripts\activate
 Run : python manage.py migrate (if any migrations are neended)
       python manage.py makemigrations
       python manage.py runserver (follow the link provided on the page)
+
+* APIs related code is present in Jobapp/
+* APIs avialable
+  1. Company (/api/v1/company)    
+  Filters: name, location
+
+  2. Jobs (/api/v1/jobs)    
+  Filters: company, location    
+
+  3. User (/api/v1/user)    
+  Filters: NA
