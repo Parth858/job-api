@@ -1,0 +1,361 @@
+{
+	"info": {
+		"_postman_id": "41e9197a-6e29-4bbb-9200-398f20f94c64",
+		"name": "NullJob API Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26451070"
+	},
+	"item": [
+		{
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "Jobs API Testing (GET Req.)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/jobs/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs API Specific ID Testing",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/jobs/4ce556e38e7142e69e2467df85fd2e49",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								"4ce556e38e7142e69e2467df85fd2e49"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs API User action testing",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/jobs/4ce556e38e7142e69e2467df85fd2e49/users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								"4ce556e38e7142e69e2467df85fd2e49",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs API Create Job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"job_role\" : \"Sales Intern\",\n    \"location\" : \"Noida\",\n    \"post_date\" : \"2023-04-05\",\n    \"company\" : \"039be60677924a3a8b3dac6d7e3dc385\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/jobs/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User API Testing (GET Req.)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/user/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User API Specific ID Testing",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/user/0134fafcd22541248cc77b5456af0f53",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"0134fafcd22541248cc77b5456af0f53"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User API Jobs action testing",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "User API Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Park ronin\",\n    \"email\" : \"temp@gmail.com\",\n    \"address\" : \"Whitefield, Bangalore\",\n    \"job\": \"1075d2a2d94e4ce285accc781efabc61\",\n    \"company\": \"039be60677924a3a8b3dac6d7e3dc385\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/user/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Company API Testing (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/company/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company API Specific ID Testing",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/company/039be60677924a3a8b3dac6d7e3dc385",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"company",
+								"039be60677924a3a8b3dac6d7e3dc385"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company API Jobs action testing",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/company/jobs",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"company",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company API User action testing",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/company/users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"company",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company API Create company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Tesla Motors\",\n    \"location\": \"New york, America\",\n    \"about\": \"Self driving car manufacturers\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:1234/api/v1/company/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1234",
+							"path": [
+								"api",
+								"v1",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

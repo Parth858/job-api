@@ -38,16 +38,16 @@ class Job(models.Model):
 
 class User(models.Model):
     user_id = models.UUIDField(primary_key=True, default=hex_uuid, editable=False)
-    name = models.CharField(max_length=30, default=None)
-    email = models.CharField(max_length=30, default=None)
-    address = models.TextField(max_length=100, default=None)
+    name = models.CharField(max_length=30, null=False)
+    email = models.CharField(max_length=30, null=False)
+    address = models.TextField(max_length=100, null=False)
     phone = models.CharField(max_length=12, default=None)
     about = models.TextField(max_length=100, default=None)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=False)
     resume = models.FileField(upload_to="resume/", null=True)
     profile_picture = models.ImageField(upload_to="profile_picture/", null=True)
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, default=None, null=False
+        Company, on_delete=models.CASCADE, null=False
     )
 
     def __str__(self):
