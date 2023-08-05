@@ -39,7 +39,8 @@ class JobViewSets(viewsets.ModelViewSet):
         if filters:
             for filterName, filterValue in filters.items():
                 if filterName in self.filterset_fields:
-                    filtersDict[filterName] = filterValue
+                    if filterValue:
+                        filtersDict[filterName] = filterValue
 
         # Even if the filtersDict is empty, it returns
         # overall data present in the Job
