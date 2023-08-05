@@ -1,0 +1,4 @@
+Django==4.2.3
+django_filter==23.2
+djangorestframework==3.14.0
+mysql_connector_repackaged==0.3.1
