@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models.expressions import RawSQL
 from django.db import connection
+from mysql.connector.errors import ProgrammingError
 
 
 # Create your views here.
@@ -18,6 +19,7 @@ from django.db import connection
 class JobViewSets(viewsets.ModelViewSet):
     queryset = Job.objects.all()  # Get all the objects from Database
     serializer_class = JobSerializer
+    foreignKeys = ["company"]
 
     # Defining filters
     # DjangoFilterBackend allows to use filters in the URL as well (like /api/?company="xyz")
@@ -64,7 +66,7 @@ class JobViewSets(viewsets.ModelViewSet):
         serializedJobData = self.serializer_class(jobData, many=True)
         serializedJobData = self.getNumberOfApplicants(serializedJobData)
         return Response(serializedJobData.data, status=status.HTTP_200_OK)
-
+    
     def getNumberOfApplicants(self, serializedData):
         if not serializedData:
             raise Exception("Serialized data not provided")
@@ -119,9 +121,9 @@ class JobViewSets(viewsets.ModelViewSet):
 class UserViewSets(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    foreignKeys = ["job", "company"]
 
     def convertToHex(self, listData):
-        print(listData)
         for i in range(len(listData)):
             if isinstance(uuid.UUID(listData[i]), uuid.uuid4):
                 listData[i] = listData[i].hex
@@ -151,11 +153,7 @@ class UserViewSets(viewsets.ModelViewSet):
                 )
 
         ## Save the data into the database
-
         # Update the fields
-        print(request.data)
-        print(self.get_serializer())
-
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)

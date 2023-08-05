@@ -7,6 +7,5 @@ router = routers.DefaultRouter()
 router.register(r"jobs", JobViewSets)
 router.register(r"user", UserViewSets)
 router.register(r"company", CompanyViewSets)
-print(router.urls)
 
 urlpatterns = [path("", include(router.urls), name="Default")]
