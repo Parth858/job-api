@@ -67,38 +67,6 @@ class JobViewSets(viewsets.ModelViewSet):
         serializedJobData = self.getNumberOfApplicants(serializedJobData)
         return Response(serializedJobData.data, status=status.HTTP_200_OK)
     
-    @action(detail=True, methods=['put'])
-    def update_details(self, request, pk=None):
-        # check if the given "id" exists in the Jobapp_job table
-        # in here, I'll use the connection method from the django.db class
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) FROM Jobapp_job where job_id=%s", [pk])
-            row_count = cursor.fetchone()
-            if row_count[0] > 0:
-                # means the row for the given job_id(primary) exists
-                sql_update_command = "UPDATE Jobapp_job SET {} WHERE job_id=%s"
-                key_value_pair = ""
-                for key, value in request.data.items():
-                    if value:
-                        if key in self.foreignKeys:
-                            key += "_id"
-                        key_value_pair += f"{key}=\'{value}\',"
-                
-                sql_update_command.format(key_value_pair)
-
-                try:
-                    sql_update_command = sql_update_command.format(key_value_pair[:-1])
-                    cursor.execute(sql_update_command, [pk])
-                except Exception as err:
-                    raise Exception(err)
-                else:
-                    connection.commit()
-                    serializerJobData = self.serializer_class(self.queryset, many=True)
-                    return Response(serializerJobData.data, status=status.HTTP_200_OK)
-            
-            else:
-                return Response({"message" : f"used_id \'{pk}\' doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
-
     def getNumberOfApplicants(self, serializedData):
         if not serializedData:
             raise Exception("Serialized data not provided")
