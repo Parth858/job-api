@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models.expressions import RawSQL
 from django.db import connection
+from mysql.connector.errors import ProgrammingError
 
 
 # Create your views here.
@@ -18,6 +19,7 @@ from django.db import connection
 class JobViewSets(viewsets.ModelViewSet):
     queryset = Job.objects.all()  # Get all the objects from Database
     serializer_class = JobSerializer
+    foreignKeys = ["company"]
 
     # Defining filters
     # DjangoFilterBackend allows to use filters in the URL as well (like /api/?company="xyz")
@@ -51,19 +53,38 @@ class JobViewSets(viewsets.ModelViewSet):
 
         return Response(serializedJobData.data, status=status.HTTP_200_OK)
 
-    def retrieve(self, request, pk=None):
-        validator = validationClass()
-        if not validator.isValidUUID(pk):
-            return Response(
-                {"message": f"value {pk} isn't a correct id"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
+    
+    @action(detail=True, methods=['put'])
+    def update_details(self, request, pk=None):
+        # check if the given "id" exists in the Jobapp_job table
+        # in here, I'll use the connection method from the django.db class
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT COUNT(*) FROM Jobapp_job where job_id=%s", [pk])
+            row_count = cursor.fetchone()
+            if row_count[0] > 0:
+                # means the row for the given job_id(primary) exists
+                sql_update_command = "UPDATE Jobapp_job SET {} WHERE job_id=%s"
+                key_value_pair = ""
+                for key, value in request.data.items():
+                    if value:
+                        if key in self.foreignKeys:
+                            key += "_id"
+                        key_value_pair += f"{key}=\'{value}\',"
+                
+                sql_update_command.format(key_value_pair)
 
-        # filter based on pk
-        jobData = self.queryset.raw("SELECT * FROM Jobapp_job WHERE job_id=%s", [pk])
-        serializedJobData = self.serializer_class(jobData, many=True)
-        serializedJobData = self.getNumberOfApplicants(serializedJobData)
-        return Response(serializedJobData.data, status=status.HTTP_200_OK)
+                try:
+                    sql_update_command = sql_update_command.format(key_value_pair[:-1])
+                    cursor.execute(sql_update_command, [pk])
+                except Exception as err:
+                    raise Exception(err)
+                else:
+                    connection.commit()
+                    serializerJobData = self.serializer_class(self.queryset, many=True)
+                    return Response(serializerJobData.data, status=status.HTTP_200_OK)
+            
+            else:
+                return Response({"message" : f"used_id \'{pk}\' doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
 
     def getNumberOfApplicants(self, serializedData):
         if not serializedData:
@@ -119,6 +140,7 @@ class JobViewSets(viewsets.ModelViewSet):
 class UserViewSets(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    foreignKeys = ["job", "company"]
 
     def convertToHex(self, listData):
         print(listData)

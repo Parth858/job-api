@@ -82,9 +82,9 @@ class MySQL:
                 "experience INTEGER NOT NULL,"
                 "created_at TIMESTAMP DEFAULT current_timestamp(),"
                 "updated_at TIMESTAMP DEFAULT current_timestamp() ON UPDATE current_timestamp(),"
-                "INDEX index_Jobapp_company (company_id),"
                 "FOREIGN KEY (company_id)"
-                "REFERENCES Jobapp_company(company_id)"
+                "REFERENCES Jobapp_company(company_id) "
+                "ON UPDATE CASCADE "
                 "ON DELETE CASCADE"
             ")"
         )
@@ -102,10 +102,12 @@ class MySQL:
                 "company_id VARCHAR(36) NOT NULL,"
                 "FOREIGN KEY (job_id)"
                 "REFERENCES Jobapp_job(job_id)"
-                "ON DELETE CASCADE,"
+                "ON DELETE CASCADE "
+                "ON UPDATE CASCADE, "
                 "FOREIGN KEY (company_id)"
                 "REFERENCES Jobapp_company(company_id)"
-                "ON DELETE CASCADE"
+                "ON DELETE CASCADE "
+                "ON UPDATE CASCADE"
             ")"
         )
 

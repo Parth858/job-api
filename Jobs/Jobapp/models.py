@@ -22,7 +22,7 @@ class Job(models.Model):
     job_id = models.UUIDField(primary_key=True, default=hex_uuid, editable=False)
     job_role = models.CharField(max_length=100, null=False)
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="companies", null=False
+        Company, on_delete=models.CASCADE, related_name="companyies", null=False
     )
     description = models.TextField(default="No description provided", max_length=500)
     location = models.CharField(max_length=100)
@@ -45,7 +45,7 @@ class User(models.Model):
     about = models.TextField(max_length=100, default=None)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=False)
     resume = models.FileField(upload_to="resume/", null=True)
-    profile_picture = models.ImageField(upload_to="profile_picture/", null=True)
+    profile_picture = models.FileField(upload_to="profile_picture/", null=True)
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, null=False
     )
