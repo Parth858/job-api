@@ -53,6 +53,19 @@ class JobViewSets(viewsets.ModelViewSet):
 
         return Response(serializedJobData.data, status=status.HTTP_200_OK)
 
+    def retrieve(self, request, pk=None):
+        validator = validationClass()
+        if not validator.isValidUUID(pk):
+            return Response(
+                {"message": f"value {pk} isn't a correct id"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # filter based on pk
+        jobData = self.queryset.raw("SELECT * FROM Jobapp_job WHERE job_id=%s", [pk])
+        serializedJobData = self.serializer_class(jobData, many=True)
+        serializedJobData = self.getNumberOfApplicants(serializedJobData)
+        return Response(serializedJobData.data, status=status.HTTP_200_OK)
     
     @action(detail=True, methods=['put'])
     def update_details(self, request, pk=None):
@@ -143,7 +156,6 @@ class UserViewSets(viewsets.ModelViewSet):
     foreignKeys = ["job", "company"]
 
     def convertToHex(self, listData):
-        print(listData)
         for i in range(len(listData)):
             if isinstance(uuid.UUID(listData[i]), uuid.uuid4):
                 listData[i] = listData[i].hex
@@ -173,11 +185,7 @@ class UserViewSets(viewsets.ModelViewSet):
                 )
 
         ## Save the data into the database
-
         # Update the fields
-        print(request.data)
-        print(self.get_serializer())
-
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
