@@ -64,7 +64,7 @@ class MySQL:
         """
         self.tables["Jobapp_company"] = (
             "CREATE TABLE IF NOT EXISTS Jobapp_company ("
-                "company_id VARCHAR(36) PRIMARY KEY,"
+                "company_id VARCHAR(36) NOT NULL PRIMARY KEY,"
                 "name VARCHAR(50) NOT NULL,"
                 "location TEXT(255) NOT NULL,"
                 "about TEXT(500) DEFAULT 'None'"
@@ -72,10 +72,10 @@ class MySQL:
         )
         self.tables['Jobapp_job'] = (
             "CREATE TABLE IF NOT EXISTS Jobapp_job ("
-                "job_id VARCHAR(36) PRIMARY KEY,"
+                "job_id VARCHAR(36) NOT NULL PRIMARY KEY,"
                 "job_role VARCHAR(50) NOT NULL,"
                 "company_id VARCHAR(36) NOT NULL,"
-                "description TEXT DEFAULT 'None',"
+                "description TEXT DEFAULT 'No description provided',"
                 "location TEXT(200) DEFAULT 'None',"
                 "post_date DATE NOT NULL,"
                 "posted BOOLEAN NOT NULL,"
@@ -91,9 +91,9 @@ class MySQL:
         self.tables['Jobapp_user'] = (
             "CREATE TABLE IF NOT EXISTS Jobapp_user ("
                 "user_id VARCHAR(36) NOT NULL PRIMARY KEY,"
-                "name VARCHAR(30) DEFAULT 'None',"
-                "email VARCHAR(30) DEFAULT 'None',"
-                "address TEXT(200) DEFAULT 'None',"
+                "name VARCHAR(30) NOT NULL,"
+                "email VARCHAR(30) NOT NULL,"
+                "address TEXT(200) NOT NULL,"
                 "phone VARCHAR(15) DEFAULT 'None',"
                 "about TEXT DEFAULT 'None',"
                 "resume VARCHAR(100) DEFAULT 'None',"

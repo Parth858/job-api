@@ -7,9 +7,9 @@ def hex_uuid():
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
-    about = models.TextField(max_length=500)
+    name = models.CharField(max_length=255, null=False)
+    location = models.CharField(max_length=255, null=False)
+    about = models.TextField(max_length=500, default=None)
     company_id = models.UUIDField(
         primary_key=True, default=hex_uuid, editable=False
     )  # uuid1 uses network address for random number, so it's better to use uuid4
@@ -19,13 +19,13 @@ class Company(models.Model):
 
 
 class Job(models.Model):
-    job_id = models.UUIDField(primary_key=True, default=hex_uuid, editable=False)
+    job_id = models.UUIDField(primary_key=True, default=hex_uuid, editable=False, null=False)
     job_role = models.CharField(max_length=100, null=False)
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, related_name="companyies", null=False
     )
     description = models.TextField(default="No description provided", max_length=500)
-    location = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, default=None)
     post_date = models.DateField(null=False)
     posted = models.BooleanField(default=False, null=False)
     experience = models.IntegerField(default=0, null=False)
@@ -37,7 +37,7 @@ class Job(models.Model):
 
 
 class User(models.Model):
-    user_id = models.UUIDField(primary_key=True, default=hex_uuid, editable=False)
+    user_id = models.UUIDField(primary_key=True, default=hex_uuid, editable=False, null=False)
     name = models.CharField(max_length=30, null=False)
     email = models.CharField(max_length=30, null=False)
     address = models.TextField(max_length=100, null=False)
