@@ -10,8 +10,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models.expressions import RawSQL
-from django.db import connection
-from mysql.connector.errors import ProgrammingError
 
 
 # Create your views here.
