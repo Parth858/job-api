@@ -1,5 +1,9 @@
-"""This file contains serializers for Job, company and user object
+"""
+This file contains serializers for Job, company and user object
 and an implementation of uuid id hex value.
+
+Note: the argumment `read_only=True` allows the field to only present
+in the output. However at the time of crud opertions, it won't be present.
 """
 
 import uuid
