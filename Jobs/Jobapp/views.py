@@ -155,7 +155,7 @@ class UserViewSets(viewsets.ModelViewSet):
                     )
 
             # image validation
-            image_data = request.FILES.get("profilePicture")
+            image_data = request.FILES.get("profile_picture")
             if image_data:
                 validation_result = validator.image_validation(image_data)
                 if not validation_result[0]:
