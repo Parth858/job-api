@@ -1,12 +1,17 @@
 import uuid
 from django.db import models
 
-
 def hex_uuid():
     return uuid.uuid4().hex
 
-
 class Company(models.Model):
+    """
+    Represents a company with related details.
+
+    This class defines the attributes associated with a company, and
+    belongs to the company table in the database
+    """
+
     name = models.CharField(max_length=255, null=False)
     location = models.CharField(max_length=255, null=False)
     about = models.TextField(max_length=500, default=None)
@@ -19,6 +24,13 @@ class Company(models.Model):
 
 
 class Job(models.Model):
+    """
+    Represents a job posting with related details.
+
+    This class defines the attributes associated with a job posting,
+    This class has one foreign field, rest are the normal fields. 
+    """
+
     job_id = models.UUIDField(primary_key=True, default=hex_uuid, editable=False, null=False)
     job_role = models.CharField(max_length=100, null=False)
     company = models.ForeignKey(
@@ -37,6 +49,13 @@ class Job(models.Model):
 
 
 class User(models.Model):
+    """
+    Represents a user profile with related details.
+
+    This class defines the attributes associated with a user profile. 
+    This class has two foreign keys that point to Job and Company table
+    """
+
     user_id = models.UUIDField(primary_key=True, default=hex_uuid, editable=False, null=False)
     name = models.CharField(max_length=30, null=False)
     email = models.CharField(max_length=30, null=False)
